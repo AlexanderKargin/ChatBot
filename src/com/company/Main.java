@@ -3,6 +3,7 @@ package com.company;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Main {
@@ -15,22 +16,16 @@ public class Main {
             System.out.println("Ты тупой штоли?");
             numberOfDigits = input.nextInt();
         }
-        Bot createNumber = new Bot(numberOfDigits);
-        System.out.println(createNumber.toString());
+        Bot createdNumber = new Bot(numberOfDigits);
+        System.out.println(createdNumber.toString());
         System.out.println("Теперь высри само число(в нем должно быть столько цифр, сколько сам указал");
         int guess = input.nextInt();
         while (Integer.toString(guess).length() != numberOfDigits){
             System.out.println("Ты точно тупой");
             guess = input.nextInt();
         }
-        checker(guess, createNumber);
-    }
-
-    public static Pair<Integer, Integer> checker(int guessNumber, Bot createdNumber){
-        int cows;
-        int bulls;
-
-        return null;
+        Pair<Integer, Integer> cowsAndBulls = createdNumber.checkCowsAndBulls(guess);
+        System.out.println(String.format("Коров: %d. Быков %d", cowsAndBulls.getKey(), cowsAndBulls.getValue()));
     }
 
     public boolean areThereRepeats(int number){
