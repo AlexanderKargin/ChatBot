@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 public class Chat {
     public void Run(){
+        
         Scanner input = new Scanner(System.in);
         System.out.println("Введите количество цифр в числе(4 или 5)");
         int numberOfDigits = input.nextInt();
