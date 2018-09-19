@@ -12,6 +12,4 @@ public class Main {
         Chat current = new Chat();
         current.Run();
     }
-
-
 }
