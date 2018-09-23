@@ -1,20 +1,52 @@
 package com.company;
 
+import javafx.scene.input.InputMethodTextRun;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class Bot {
     ArrayList<Integer> mainNumber = new ArrayList<>();
+    private int numberOfDigits = 0;
+    private int guess = 0;
+    private int tries = 0;
+    public boolean gameOver = false;
 
-    public Bot(int amountOfNumbers){
-        mainNumber.add((int)(Math.random() * 9 + 1));
-        while (mainNumber.size() < amountOfNumbers){
-            int newNumber = (int)(Math.random() * 10);
+    private void createNumber(){
+        Random random = new Random();
+        mainNumber.add(random.nextInt(9) + 1);
+        while (mainNumber.size() < numberOfDigits){
+            int newNumber = (random.nextInt(10));
             if (!mainNumber.contains(newNumber))
                 mainNumber.add(newNumber);
         }
+    }
+
+    public void readInput(Integer input) {
+        if (numberOfDigits == 0 && input > 3 && input < 6) {
+            numberOfDigits = input;
+            createNumber();
+        }
+        if (numberOfDigits != 0 && Integer.toString(input).length() == numberOfDigits && !areThereRepeats(input)) {
+            guess = input;
+            tries++;
+        }
+    }
+
+    public String makeAnswer(){
+        if (numberOfDigits == 0)
+            return ("Input the number of digits(4 or 5)");
+        if (guess == 0)
+            return ("Make your guess");
+        Pair<Integer, Integer> result = checkCowsAndBulls(guess);
+        if (result.getValue() == 4) {
+            gameOver = true;
+            return (String.format("Congratulations! You win! \nAmount of tries %d \n" + this.toString(), tries));
+        }
+        else
+            return (String.format("Cows: %d, Bulls: %d.", result.getKey(), result.getValue()));
     }
 
     public Pair<Integer, Integer> checkCowsAndBulls(int guessNumber){
@@ -33,6 +65,17 @@ public class Bot {
                 cows++;
         }
         return new Pair<>(cows, bulls);
+    }
+
+    public boolean areThereRepeats(int number) {
+        String stringNumber = Integer.toString(number);
+        ArrayList<Character> numbers = new ArrayList<>();
+        for (var i = 0; i < stringNumber.length(); i++) {
+            if (numbers.contains(stringNumber.charAt(i)))
+                return true;
+            numbers.add(stringNumber.charAt(i));
+        }
+        return false;
     }
 
     @Override
