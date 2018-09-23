@@ -33,6 +33,10 @@ public class Bot {
             guess = input;
             tries++;
         }
+        if (numberOfDigits != 0 && Integer.toString(input).length() != numberOfDigits && input > 1000)
+            guess = -1;
+        if (numberOfDigits != 0 && areThereRepeats(input) && input > 1000)
+            guess = -2;
     }
 
     public String makeAnswer(){
@@ -40,13 +44,18 @@ public class Bot {
             return ("Input the number of digits(4 or 5)");
         if (guess == 0)
             return ("Make your guess");
+        if (guess == -1)
+            return("Wrong number of digits in input number");
+        if (guess == -2)
+            return ("There are repetitions in input number");
         Pair<Integer, Integer> result = checkCowsAndBulls(guess);
         if (result.getValue() == 4) {
             gameOver = true;
             return (String.format("Congratulations! You win! \nAmount of tries %d \n" + this.toString(), tries));
         }
-        else
+        else {
             return (String.format("Cows: %d, Bulls: %d.", result.getKey(), result.getValue()));
+        }
     }
 
     public Pair<Integer, Integer> checkCowsAndBulls(int guessNumber){
