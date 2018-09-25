@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-public class Bot {
+public class Bot implements BotInterface{
     ArrayList<Integer> mainNumber = new ArrayList<>();
     private int numberOfDigits = 0;
     private int guess = 0;

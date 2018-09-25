@@ -10,7 +10,8 @@ public class Chat {
         Scanner input = new Scanner(System.in);
         Bot bot = new Bot();
         String output;
-        System.out.println("Hello, lets play Cows and Bulls. Input the number of digits(4 or 5)");
+        System.out.println("Hello, lets play Cows and Bulls.");
+        System.out.println(bot.makeAnswer());
         do{
             int number = input.nextInt();
             bot.readInput(number);
