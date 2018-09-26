@@ -14,14 +14,14 @@ public class tests {
     @Test
     public void testFullBulls() {
         Bot bot = new Bot();
-        bot.mainNumber = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4));
+        bot.mainNumber = Arrays.asList(1, 2, 3, 4);
         assertEquals(4, (int)bot.checkCowsAndBulls(1234).getValue());
     }
 
     @Test
     public void testFullCows(){
         Bot bot = new Bot();
-        bot.mainNumber = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4));
+        bot.mainNumber = new ArrayList<Integer>(Arrays.<Integer> asList(1, 2, 3, 4));
         assertEquals(4, (int)bot.checkCowsAndBulls(4321).getKey());
     }
 

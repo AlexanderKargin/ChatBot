@@ -3,16 +3,25 @@ package com.company;
 import javafx.scene.input.InputMethodTextRun;
 import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
+import java.util.*;
 
-public class Bot implements BotInterface{
-    ArrayList<Integer> mainNumber = new ArrayList<>();
+public class Bot{
+    List<Integer> mainNumber = new ArrayList<>();
     private int numberOfDigits = 0;
     private int guess = 0;
     private int tries = 0;
     public boolean gameOver = false;
+    private int error = 0;
+    private Map<Integer, String> errorDict = makeDict();
+
+    private Map<Integer, String> makeDict(){
+        Map<Integer, String> map = new HashMap<>();
+        map.put(1, "Wrong number of digits");
+        map.put(2, "There are repetitions in number");
+        map.put(3, "Incorrect input");
+        return map;
+    };
+
 
     private void createNumber(){
         Random random = new Random();
@@ -24,30 +33,39 @@ public class Bot implements BotInterface{
         }
     }
 
-    public void readInput(Integer input) {
-        if (numberOfDigits == 0 && input > 3 && input < 6) {
-            numberOfDigits = input;
-            createNumber();
+    public void readInput(String str, User user) {
+        error = 0;
+        try {
+            int input = Integer.parseInt(str);
+
+            if (numberOfDigits != 0 && Integer.toString(input).length() != numberOfDigits)
+                error = 1;
+            if (numberOfDigits != 0 && areThereRepeats(input))
+                error = 2;
+
+            if (numberOfDigits == 0 && input > 3 && input < 6) {
+                numberOfDigits = input;
+                createNumber();
+                user.cowsAndBullsNumber = this.toString();
+            }
+            if (numberOfDigits != 0 && Integer.toString(input).length() == numberOfDigits && !areThereRepeats(input)) {
+                guess = input;
+                tries++;
+            }
         }
-        if (numberOfDigits != 0 && Integer.toString(input).length() == numberOfDigits && !areThereRepeats(input)) {
-            guess = input;
-            tries++;
+        catch (NumberFormatException e)
+        {
+            error = 3;
         }
-        if (numberOfDigits != 0 && Integer.toString(input).length() != numberOfDigits && input > 1000)
-            guess = -1;
-        if (numberOfDigits != 0 && areThereRepeats(input) && input > 1000)
-            guess = -2;
     }
 
     public String makeAnswer(){
+        if (error != 0)
+            return (errorDict.get(error));
         if (numberOfDigits == 0)
             return ("Input the number of digits(4 or 5)");
         if (guess == 0)
             return ("Make your guess");
-        if (guess == -1)
-            return("Wrong number of digits in input number");
-        if (guess == -2)
-            return ("There are repetitions in input number");
         Pair<Integer, Integer> result = checkCowsAndBulls(guess);
         if (result.getValue() == 4) {
             gameOver = true;

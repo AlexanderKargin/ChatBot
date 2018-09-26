@@ -6,15 +6,20 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Chat {
+    private ArrayList<User> users = new ArrayList<User>();
+
     public void Run(){
         Scanner input = new Scanner(System.in);
         Bot bot = new Bot();
         String output;
-        System.out.println("Hello, lets play Cows and Bulls.");
+        System.out.println("Hello, write yor name.");
+        var currentUser = new User(input.nextLine());
+        users.add(currentUser);
+        System.out.println("Lets play Cows and Bulls.");
         System.out.println(bot.makeAnswer());
         do{
-            int number = input.nextInt();
-            bot.readInput(number);
+            var inputStr = input.nextLine();
+            bot.readInput(inputStr, currentUser);
             output = bot.makeAnswer();
             System.out.println(output);
         } while (!bot.gameOver);
