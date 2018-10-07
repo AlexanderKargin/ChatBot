@@ -6,7 +6,7 @@ import javafx.util.Pair;
 import java.util.*;
 
 public class Bot{
-    List<Integer> mainNumber = new ArrayList<>();
+    private List<Integer> mainNumber = new ArrayList<>();
     private int numberOfDigits = 0;
     private int guess = 0;
     private int tries = 0;
@@ -22,6 +22,13 @@ public class Bot{
         return map;
     };
 
+    public void setMainNumber(List<Integer> temp){
+        mainNumber = temp;
+    }
+
+    public List<Integer> getMainNumber(){
+        return mainNumber;
+    }
 
     private void createNumber(){
         Random random = new Random();
@@ -47,10 +54,12 @@ public class Bot{
                 numberOfDigits = input;
                 createNumber();
                 user.cowsAndBullsNumber = this.toString();
+                System.out.println(this.toString());
             }
             if (numberOfDigits != 0 && Integer.toString(input).length() == numberOfDigits && !areThereRepeats(input)) {
                 guess = input;
                 tries++;
+                user.tries = Integer.toString(tries);
             }
         }
         catch (NumberFormatException e)
