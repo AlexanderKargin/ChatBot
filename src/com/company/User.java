@@ -12,15 +12,10 @@ public class User {
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder();
-        res.append("name=");
         res.append(name);
-        res.append(":");
-        res.append("number=");
-        res.append(cowsAndBullsNumber);
-        res.append(":");
-        res.append("tries=");
+        res.append("|");
         res.append(tries);
-        res.append("\n");
+        res.append("|\n");
         return res.toString();
     }
 }

@@ -23,7 +23,8 @@ public class Chat {
             bot.readInput(inputStr, currentUser);
             output = bot.makeAnswer();
             System.out.println(output);
+            System.out.println(bot.toString());
         } while (!bot.gameOver);
-        saver.saveUser(currentUser);
+        saver.saveHighScore(currentUser);
     }
 }

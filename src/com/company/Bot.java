@@ -54,7 +54,6 @@ public class Bot{
                 numberOfDigits = input;
                 createNumber();
                 user.cowsAndBullsNumber = this.toString();
-                System.out.println(this.toString());
             }
             if (numberOfDigits != 0 && Integer.toString(input).length() == numberOfDigits && !areThereRepeats(input)) {
                 guess = input;
@@ -95,7 +94,7 @@ public class Bot{
         }
         Collections.reverse(partsOfNumber);
         for (var i = 0; i < partsOfNumber.size(); i++) {
-            if (partsOfNumber.get(i) == mainNumber.get(i))
+            if (partsOfNumber.get(i).equals(mainNumber.get(i)))
                 bulls++;
             else if (mainNumber.contains(partsOfNumber.get(i)))
                 cows++;
