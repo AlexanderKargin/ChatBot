@@ -16,6 +16,7 @@ public class Chat {
         System.out.println("Hello, write yor name.");
         var currentUser = new User(input.nextLine());
         users.add(currentUser);
+//        saver.checkUserLog(currentUser);
         System.out.println("Lets play Cows and Bulls.");
         System.out.println(bot.makeAnswer());
         do{
