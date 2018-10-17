@@ -18,14 +18,14 @@ public class Saver {
         }
 
         String[] parts = text.toString().split("/");
-        if (parts.length == 15 && Integer.parseInt(parts[parts.length - 1]) <= Integer.parseInt(user.tries)) {
+        if (parts.length == 15 && Integer.parseInt(parts[parts.length - 1]) <= (user.getTries())) {
             System.out.println("You didn't set new high score :(");
             return;
         }
 
         ArrayList<Pair<String, Integer>> scores = new ArrayList<>();
         try (FileWriter writer = new FileWriter("src/com/company/history.txt", false)) {
-            if (parts.length == 0){
+            if (parts.length == 1){
                 writer.write("1/" + user.toString());
                 return;
             }
@@ -37,7 +37,7 @@ public class Saver {
             if (scores.size() == 5){
                 scores.remove(scores.get(4));
             }
-            scores.add(new Pair<>(user.name, Integer.parseInt(user.tries)));
+            scores.add(new Pair<>(user.name, user.getTries()));
             Collections.sort(scores, Comparator.comparing(p -> p.getValue()));
 
             for (var i = 0; i < scores.size(); i++){

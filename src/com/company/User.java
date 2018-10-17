@@ -3,19 +3,28 @@ package com.company;
 public class User {
     public String name;
     public String cowsAndBullsNumber;
-    public String tries;
+    private Integer tries;
 
     public User(String name){
         this.name = name;
+        this.tries = 0;
+    }
+
+    public void increaseTries(){
+        tries++;
+    }
+
+    public Integer getTries(){
+        return tries;
     }
 
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder();
         res.append(name);
-        res.append("|");
-        res.append(tries);
-        res.append("|\n");
+        res.append("/");
+        res.append(tries.toString());
+        res.append("/\n");
         return res.toString();
     }
 }

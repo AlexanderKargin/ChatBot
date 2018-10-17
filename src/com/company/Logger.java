@@ -10,23 +10,23 @@ import java.util.Scanner;
 public class Logger {
     public void checkUserLog(User user){
         String fileName = String.format("src/com/company/logs/%s.txt", user.name);
-        if (new File(fileName).exists()){
-            System.out.println("There is a save with the same name, do you want continue saved game? Y/N");
-            Scanner input = new Scanner(System.in);
-            String answer = input.nextLine();
-            if (answer.equalsIgnoreCase("Yes") || answer.equalsIgnoreCase("Y")){
-                printExistingLog(fileName);
-            }
-            else{
-                deleteExistingLog(fileName);
-                System.out.println("New game started");
+        File file = new File(fileName);
+        if (file.exists()){
+            if (file.length() > 0) {
+                System.out.println("There is a save with the same name, do you want continue saved game? Y/N");
+                Scanner input = new Scanner(System.in);
+                String answer = input.nextLine();
+                if (answer.equalsIgnoreCase("Yes") || answer.equalsIgnoreCase("Y")) {
+                    printExistingLog(fileName);
+                } else {
+                    deleteExistingLog(fileName);
+                    System.out.println("New game started");
+                }
             }
         }
         else{
             try{
-                if (new File(fileName).createNewFile()){
-                    System.out.println("New game started");
-                }
+                new File(fileName).createNewFile();
             }
             catch (IOException e) {
                 System.out.println(e.getMessage());
@@ -38,8 +38,8 @@ public class Logger {
         System.out.println("Existing Log");
     }
 
-    private void deleteExistingLog(String filename){
-        try (FileWriter writer = new FileWriter(filename, false)){
+    private void deleteExistingLog(String fileName){
+        try (FileWriter writer = new FileWriter(fileName, false)){
             writer.write("");
         }
         catch (IOException e){
@@ -47,13 +47,23 @@ public class Logger {
         }
     }
 
-    private String getUserLog(User user, Pair<Integer, Integer> cowsBulls, Integer tries){
-        return String.format("%s/%s/%d/%d/%d/\n", user.name, user.cowsAndBullsNumber,
-                tries, cowsBulls.getKey(), cowsBulls.getValue());
+    public void deleteExistingLog(User user){
+        String fileName = String.format("src/com/company/logs/%s.txt", user.name);
+        try (FileWriter writer = new FileWriter(fileName, false)){
+            writer.write("");
+        }
+        catch (IOException e){
+            System.out.println(e.getMessage());
+        }
     }
 
-    public void saveLog(User user, Pair<Integer, Integer>  cowsBulls, Integer tries){
-        String log = getUserLog(user, cowsBulls, tries);
+    private String getUserLog(Pair<Integer, Integer> cowsBulls, Integer guess){
+        return String.format("%d/%d/%d/\n", guess, cowsBulls.getKey(), cowsBulls.getValue());
+    }
+
+
+    public void saveLog(User user, Pair<Integer, Integer>  cowsBulls, Integer guess){
+        String log = getUserLog(cowsBulls, guess);
         String fileName = String.format("src/com/company/logs/%s.txt", user.name);
         try (FileWriter writer = new FileWriter(fileName, true)){
             writer.write(log);

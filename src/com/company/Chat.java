@@ -18,11 +18,11 @@ public class Chat {
         users.add(currentUser);
 //        saver.checkUserLog(currentUser);
         System.out.println("Lets play Cows and Bulls.");
-        System.out.println(bot.makeAnswer());
+        System.out.println(bot.makeAnswer(currentUser));
         do{
             var inputStr = input.nextLine();
             bot.readInput(inputStr, currentUser);
-            output = bot.makeAnswer();
+            output = bot.makeAnswer(currentUser);
             System.out.println(output);
             //System.out.println(bot.toString());
         } while (!bot.gameOver);

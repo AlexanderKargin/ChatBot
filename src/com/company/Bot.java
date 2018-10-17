@@ -9,10 +9,10 @@ public class Bot{
     private List<Integer> mainNumber = new ArrayList<>();
     private int numberOfDigits = 0;
     private int guess = 0;
-    private int tries = 0;
     public boolean gameOver = false;
     private int error = 0;
     private Map<Integer, String> errorDict = makeDict();
+    private Logger logger = new Logger();
 
     private Map<Integer, String> makeDict(){
         Map<Integer, String> map = new HashMap<>();
@@ -57,29 +57,36 @@ public class Bot{
             }
             if (numberOfDigits != 0 && Integer.toString(input).length() == numberOfDigits && !areThereRepeats(input)) {
                 guess = input;
-                tries++;
-                user.tries = Integer.toString(tries);
+                user.increaseTries();
             }
         }
         catch (NumberFormatException e)
         {
-            error = 3;
+            if (user.getTries() > 0 && (str.equals("/q")|| str.equals("/quit"))) {
+                gameOver = true;
+            }
+            else
+                error = 3;
         }
     }
 
-    public String makeAnswer(){
+    public String makeAnswer(User user){
         if (error != 0)
             return (errorDict.get(error));
-        if (numberOfDigits == 0)
+        if (numberOfDigits == 0) {
+            logger.checkUserLog(user);
             return ("Input the number of digits(4 or 5)");
+        }
         if (guess == 0)
             return ("Make your guess");
         Pair<Integer, Integer> result = checkCowsAndBulls(guess);
         if (result.getValue() == 4) {
             gameOver = true;
-            return (String.format("Congratulations! You win! \nAmount of tries %d \n" + this.toString(), tries));
+            logger.deleteExistingLog(user);
+            return (String.format("Congratulations! You win! \nAmount of tries %d \n" + this.toString(), user.getTries()));
         }
         else {
+            logger.saveLog(user, result, guess);
             return (String.format("Cows: %d, Bulls: %d.", result.getKey(), result.getValue()));
         }
     }
