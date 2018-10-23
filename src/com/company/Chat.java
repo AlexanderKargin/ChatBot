@@ -11,7 +11,6 @@ public class Chat {
     public void Run(){
         Scanner input = new Scanner(System.in);
         Bot bot = new Bot();
-        Saver saver = new Saver();
         String output;
         System.out.println("Hello, write yor name.");
         var currentUser = new User(input.nextLine());
@@ -24,8 +23,7 @@ public class Chat {
             bot.readInput(inputStr, currentUser);
             output = bot.makeAnswer(currentUser);
             System.out.println(output);
-            //System.out.println(bot.toString());
+            System.out.println(bot.toString());
         } while (!bot.gameOver);
-        saver.saveHighScore(currentUser);
     }
 }

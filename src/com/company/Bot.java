@@ -13,6 +13,7 @@ public class Bot{
     private int error = 0;
     private Map<Integer, String> errorDict = makeDict();
     private Logger logger = new Logger();
+    private Saver saver = new Saver();
 
     private Map<Integer, String> makeDict(){
         Map<Integer, String> map = new HashMap<>();
@@ -53,6 +54,7 @@ public class Bot{
             if (numberOfDigits == 0 && input > 3 && input < 6) {
                 numberOfDigits = input;
                 createNumber();
+                logger.addNumber(this.toString(), user);
                 user.cowsAndBullsNumber = this.toString();
             }
             if (numberOfDigits != 0 && Integer.toString(input).length() == numberOfDigits && !areThereRepeats(input)) {
@@ -71,23 +73,28 @@ public class Bot{
     }
 
     public String makeAnswer(User user){
-        if (error != 0)
-            return (errorDict.get(error));
-        if (numberOfDigits == 0) {
-            logger.checkUserLog(user);
-            return ("Input the number of digits(4 or 5)");
-        }
-        if (guess == 0)
-            return ("Make your guess");
-        Pair<Integer, Integer> result = checkCowsAndBulls(guess);
-        if (result.getValue() == 4) {
-            gameOver = true;
-            logger.deleteExistingLog(user);
-            return (String.format("Congratulations! You win! \nAmount of tries %d \n" + this.toString(), user.getTries()));
+        if (!gameOver) {
+            if (error != 0)
+                return (errorDict.get(error));
+            if (numberOfDigits == 0) {
+                logger.checkUserLog(user);
+                return ("Input the number of digits(4 or 5)");
+            }
+            if (guess == 0)
+                return ("Make your guess");
+            Pair<Integer, Integer> result = checkCowsAndBulls(guess);
+            if (result.getValue() == 4) {
+                gameOver = true;
+                saver.saveHighScore(user);
+                logger.deleteExistingLog(user);
+                return (String.format("Congratulations! You win! \nAmount of tries %d \n" + this.toString(), user.getTries()));
+            } else {
+                logger.saveLog(user, result, guess);
+                return (String.format("Cows: %d, Bulls: %d.", result.getKey(), result.getValue()));
+            }
         }
         else {
-            logger.saveLog(user, result, guess);
-            return (String.format("Cows: %d, Bulls: %d.", result.getKey(), result.getValue()));
+            return ("Game is over");
         }
     }
 

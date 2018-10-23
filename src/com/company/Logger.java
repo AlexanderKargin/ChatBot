@@ -17,7 +17,7 @@ public class Logger {
                 Scanner input = new Scanner(System.in);
                 String answer = input.nextLine();
                 if (answer.equalsIgnoreCase("Yes") || answer.equalsIgnoreCase("Y")) {
-                    printExistingLog(fileName);
+                    parseExistingLog(fileName);
                 } else {
                     deleteExistingLog(fileName);
                     System.out.println("New game started");
@@ -34,7 +34,8 @@ public class Logger {
         }
     }
 
-    private void printExistingLog(String fileName){
+    private void parseExistingLog(String fileName){
+
         System.out.println("Existing Log");
     }
 
@@ -67,6 +68,16 @@ public class Logger {
         String fileName = String.format("src/com/company/logs/%s.txt", user.name);
         try (FileWriter writer = new FileWriter(fileName, true)){
             writer.write(log);
+        }
+        catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void addNumber(String number, User user){
+        String fileName = String.format("src/com/company/logs/%s.txt", user.name);
+        try (FileWriter writer = new FileWriter(fileName, true)){
+            writer.write(number + "\n");
         }
         catch (IOException e){
             System.out.println(e.getMessage());
