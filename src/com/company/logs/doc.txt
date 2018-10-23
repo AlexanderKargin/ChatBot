@@ -1,0 +1,6 @@
+7523
+guess:1234 cows:2 bulls:0
+guess:3456 cows:2 bulls:0
+guess:1234 cows:2 bulls:0
+guess:3456 cows:2 bulls:0
+guess:2345 cows:3 bulls:0

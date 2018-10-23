@@ -41,6 +41,16 @@ public class Bot{
         }
     }
 
+    private List<Integer> parseMainNumber(Integer input){
+        ArrayList<Integer> result = new ArrayList<>();
+        while(input > 0){
+            result.add(input % 10);
+            input /= 10;
+        }
+        Collections.reverse(result);
+        return result;
+    }
+
     public void readInput(String str, User user) {
         error = 0;
         try {
@@ -77,8 +87,16 @@ public class Bot{
             if (error != 0)
                 return (errorDict.get(error));
             if (numberOfDigits == 0) {
-                logger.checkUserLog(user);
-                return ("Input the number of digits(4 or 5)");
+                if (logger.checkUserLog(user)){
+                    Pair<Pair<Integer, Integer>, String> information = logger.parseExistingLog(user);
+                    mainNumber = parseMainNumber(information.getKey().getKey());
+                    user.setTries(information.getKey().getValue());
+                    numberOfDigits = mainNumber.size();
+                    return information.getValue();
+                }
+                else {
+                    return ("Input the number of digits(4 or 5)");
+                }
             }
             if (guess == 0)
                 return ("Make your guess");

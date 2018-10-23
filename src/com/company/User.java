@@ -14,6 +14,8 @@ public class User {
         tries++;
     }
 
+    public void setTries(Integer tries){ this.tries = tries; }
+
     public Integer getTries(){
         return tries;
     }

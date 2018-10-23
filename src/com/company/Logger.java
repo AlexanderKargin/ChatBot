@@ -3,12 +3,13 @@ package com.company;
 import javafx.util.Pair;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
 public class Logger {
-    public void checkUserLog(User user){
+    public Boolean checkUserLog(User user){
         String fileName = String.format("src/com/company/logs/%s.txt", user.name);
         File file = new File(fileName);
         if (file.exists()){
@@ -17,10 +18,11 @@ public class Logger {
                 Scanner input = new Scanner(System.in);
                 String answer = input.nextLine();
                 if (answer.equalsIgnoreCase("Yes") || answer.equalsIgnoreCase("Y")) {
-                    parseExistingLog(fileName);
+                    return true;
                 } else {
                     deleteExistingLog(fileName);
                     System.out.println("New game started");
+                    return false;
                 }
             }
         }
@@ -32,11 +34,29 @@ public class Logger {
                 System.out.println(e.getMessage());
             }
         }
+        return false;
     }
 
-    private void parseExistingLog(String fileName){
-
-        System.out.println("Existing Log");
+    public Pair<Pair<Integer, Integer>, String> parseExistingLog(User user){
+        // main number
+        // number/cows/bulls/
+        String fileName = String.format("src/com/company/logs/%s.txt", user.name);
+        StringBuilder logs = new StringBuilder();
+        try (FileReader reader = new FileReader(fileName)){
+            Scanner scan = new Scanner(reader);
+            int mainNumber = Integer.parseInt(scan.nextLine());
+            int tries = 0;
+            while(scan.hasNextLine()){
+                logs.append(scan.nextLine());
+                logs.append("\n");
+                tries++;
+            }
+            return new Pair<>(new Pair<>(mainNumber, tries), logs.toString());
+        }
+        catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+        return new Pair<>(new Pair<>(0, 0), "");
     }
 
     private void deleteExistingLog(String fileName){
@@ -59,7 +79,7 @@ public class Logger {
     }
 
     private String getUserLog(Pair<Integer, Integer> cowsBulls, Integer guess){
-        return String.format("%d/%d/%d/\n", guess, cowsBulls.getKey(), cowsBulls.getValue());
+        return String.format("guess:%d cows:%d bulls:%d\n", guess, cowsBulls.getKey(), cowsBulls.getValue());
     }
 
 
