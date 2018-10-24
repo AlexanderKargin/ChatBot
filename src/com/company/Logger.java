@@ -37,7 +37,7 @@ public class Logger {
         return false;
     }
 
-    public Pair<Pair<Integer, Integer>, String> parseExistingLog(User user){
+    public LogInformation parseExistingLog(User user){
         // main number
         // number/cows/bulls/
         String fileName = String.format("src/com/company/logs/%s.txt", user.name);
@@ -51,12 +51,12 @@ public class Logger {
                 logs.append("\n");
                 tries++;
             }
-            return new Pair<>(new Pair<>(mainNumber, tries), logs.toString());
+            return new LogInformation(mainNumber, tries, logs.toString());
         }
         catch (IOException e){
             System.out.println(e.getMessage());
         }
-        return new Pair<>(new Pair<>(0, 0), "");
+        return new LogInformation(0, 0, "");
     }
 
     private void deleteExistingLog(String fileName){
@@ -78,13 +78,13 @@ public class Logger {
         }
     }
 
-    private String getUserLog(Pair<Integer, Integer> cowsBulls, Integer guess){
+    private String makeUserLog(Pair<Integer, Integer> cowsBulls, Integer guess){
         return String.format("guess:%d cows:%d bulls:%d\n", guess, cowsBulls.getKey(), cowsBulls.getValue());
     }
 
 
     public void saveLog(User user, Pair<Integer, Integer>  cowsBulls, Integer guess){
-        String log = getUserLog(cowsBulls, guess);
+        String log = makeUserLog(cowsBulls, guess);
         String fileName = String.format("src/com/company/logs/%s.txt", user.name);
         try (FileWriter writer = new FileWriter(fileName, true)){
             writer.write(log);

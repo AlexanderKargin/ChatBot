@@ -88,11 +88,11 @@ public class Bot{
                 return (errorDict.get(error));
             if (numberOfDigits == 0) {
                 if (logger.checkUserLog(user)){
-                    Pair<Pair<Integer, Integer>, String> information = logger.parseExistingLog(user);
-                    mainNumber = parseMainNumber(information.getKey().getKey());
-                    user.setTries(information.getKey().getValue());
+                    LogInformation information = logger.parseExistingLog(user);
+                    mainNumber = parseMainNumber(information.getMainNumber());
+                    user.setTries(information.getTries());
                     numberOfDigits = mainNumber.size();
-                    return information.getValue();
+                    return information.getLogInfo();
                 }
                 else {
                     return ("Input the number of digits(4 or 5)");

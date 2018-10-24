@@ -7,7 +7,7 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class tests {
+public class BotTests {
     @Test
     public void testFullBulls() {
         Bot bot = new Bot();
