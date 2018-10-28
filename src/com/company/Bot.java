@@ -83,36 +83,32 @@ public class Bot{
     }
 
     public String makeAnswer(User user){
-        if (!gameOver) {
-            if (error != 0)
-                return (errorDict.get(error));
-            if (numberOfDigits == 0) {
-                if (logger.checkUserLog(user)){
-                    LogInformation information = logger.parseExistingLog(user);
-                    mainNumber = parseMainNumber(information.getMainNumber());
-                    user.setTries(information.getTries());
-                    numberOfDigits = mainNumber.size();
-                    return information.getLogInfo();
-                }
-                else {
-                    return ("Input the number of digits(4 or 5)");
-                }
-            }
-            if (guess == 0)
-                return ("Make your guess");
-            Pair<Integer, Integer> result = checkCowsAndBulls(guess);
-            if (result.getValue() == 4) {
-                gameOver = true;
-                saver.saveHighScore(user);
-                logger.deleteExistingLog(user);
-                return (String.format("Congratulations! You win! \nAmount of tries %d \n" + this.toString(), user.getTries()));
-            } else {
-                logger.saveLog(user, result, guess);
-                return (String.format("Cows: %d, Bulls: %d.", result.getKey(), result.getValue()));
-            }
-        }
-        else {
+        if (gameOver) {
             return ("Game is over");
+        }
+        if (error != 0)
+            return (errorDict.get(error));
+        if (numberOfDigits == 0) {
+            if (!logger.checkUserLog(user)) {
+                return ("Input the number of digits(4 or 5)");
+            }
+            LogInformation information = logger.parseExistingLog(user);
+            mainNumber = parseMainNumber(information.getMainNumber());
+            user.setTries(information.getTries());
+            numberOfDigits = mainNumber.size();
+            return information.getLogInfo();
+        }
+        if (guess == 0)
+            return ("Make your guess");
+        Pair<Integer, Integer> result = checkCowsAndBulls(guess);
+        if (result.getValue() == 4) {
+            gameOver = true;
+            saver.saveHighScore(user);
+            logger.deleteExistingLog(user);
+            return (String.format("Congratulations! You win! \nAmount of tries %d \n" + this.toString(), user.getTries()));
+        } else {
+            logger.saveLog(user, result, guess);
+            return (String.format("Cows: %d, Bulls: %d.", result.getKey(), result.getValue()));
         }
     }
 

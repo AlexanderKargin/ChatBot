@@ -28,7 +28,7 @@ public class Logger {
         }
         else{
             try{
-                new File(fileName).createNewFile();
+                file.createNewFile();
             }
             catch (IOException e) {
                 System.out.println(e.getMessage());
