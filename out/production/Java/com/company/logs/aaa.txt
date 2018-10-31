@@ -1,3 +1,1 @@
-6852
-guess:1234 cows:1 bulls:0
-guess:1234 cows:1 bulls:0
+3647
