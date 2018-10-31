@@ -10,10 +10,12 @@ public class Bot{
     private int numberOfDigits = 0;
     private int guess = 0;
     public boolean gameOver = false;
+    private boolean hasSave = false;
+    private String loadedSave = "";
     private int error = 0;
     private Map<Integer, String> errorDict = makeDict();
-    private Logger logger = new Logger();
     private Saver saver = new Saver();
+    private HighScoresMaker highScoresMaker = new HighScoresMaker();
 
     private Map<Integer, String> makeDict(){
         Map<Integer, String> map = new HashMap<>();
@@ -64,7 +66,7 @@ public class Bot{
             if (numberOfDigits == 0 && input > 3 && input < 6) {
                 numberOfDigits = input;
                 createNumber();
-                logger.addNumber(this.toString(), user);
+                saver.addNumber(this.toString(), user);
                 user.cowsAndBullsNumber = this.toString();
             }
             if (numberOfDigits != 0 && Integer.toString(input).length() == numberOfDigits && !areThereRepeats(input)) {
@@ -76,6 +78,15 @@ public class Bot{
         {
             if (user.getTries() > 0 && (str.equals("/q")|| str.equals("/quit"))) {
                 gameOver = true;
+            }
+            else if (hasSave && (str.equalsIgnoreCase("y") || str.equalsIgnoreCase("yes"))){
+                loadedSave = loadSave(user);
+                hasSave = false;
+            }
+            else if (hasSave && (str.equalsIgnoreCase("n") || str.equalsIgnoreCase("no"))){
+                loadedSave = "";
+                saver.deleteExistingSave(user);
+                hasSave = false;
             }
             else
                 error = 3;
@@ -89,25 +100,26 @@ public class Bot{
         if (error != 0)
             return (errorDict.get(error));
         if (numberOfDigits == 0) {
-            if (!logger.checkUserLog(user)) {
+            if (!saver.checkUserSave(user)) {
                 return ("Input the number of digits(4 or 5)");
             }
-            LogInformation information = logger.parseExistingLog(user);
-            mainNumber = parseMainNumber(information.getMainNumber());
-            user.setTries(information.getTries());
-            numberOfDigits = mainNumber.size();
-            return information.getLogInfo();
+            hasSave = true;
+            return ("There is a save with the same name, do you want continue saved game? Y/N");
         }
-        if (guess == 0)
+        if (guess == 0) {
+            if (!loadedSave.isEmpty()){
+                return loadedSave;
+            }
             return ("Make your guess");
+        }
         Pair<Integer, Integer> result = checkCowsAndBulls(guess);
         if (result.getValue() == 4) {
             gameOver = true;
-            saver.saveHighScore(user);
-            logger.deleteExistingLog(user);
+            highScoresMaker.saveHighScore(user);
+            saver.deleteExistingSave(user);
             return (String.format("Congratulations! You win! \nAmount of tries %d \n" + this.toString(), user.getTries()));
         } else {
-            logger.saveLog(user, result, guess);
+            saver.save(user, result, guess);
             return (String.format("Cows: %d, Bulls: %d.", result.getKey(), result.getValue()));
         }
     }
@@ -139,6 +151,14 @@ public class Bot{
             numbers.add(stringNumber.charAt(i));
         }
         return false;
+    }
+
+    private String loadSave(User user){
+        SaveInformation information = saver.parseExistingSave(user);
+        mainNumber = parseMainNumber(information.getMainNumber());
+        user.setTries(information.getTries());
+        numberOfDigits = mainNumber.size();
+        return information.getLogInfo();
     }
 
     @Override

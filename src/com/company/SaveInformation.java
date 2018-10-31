@@ -1,11 +1,11 @@
 package com.company;
 
-public class LogInformation {
+public class SaveInformation {
     private Integer mainNumber;
     private Integer tries;
     private String logInfo;
 
-    public LogInformation(Integer number, Integer amountOfTries, String info){
+    public SaveInformation(Integer number, Integer amountOfTries, String info){
         mainNumber = number;
         tries = amountOfTries;
         logInfo = info;

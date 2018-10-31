@@ -1,57 +1,102 @@
 package com.company;
+
 import javafx.util.Pair;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class Saver {
-    public void saveHighScore(User user) {
-        String fileName = "src/com/company/HighScore.txt";
-        String[] parts = getExistingHighScores(fileName);
-        if (parts.length == 15 && Integer.parseInt(parts[parts.length - 1]) <= (user.getTries())) {
-            System.out.println("You didn't set new high score :(");
-            return;
+    public Boolean checkUserSave(User user){
+        String fileName = String.format("src/com/company/logs/%s.txt", user.name);
+        File file = new File(fileName);
+        if (!file.exists()) {
+            createSaveFile(user);
+            return false;
         }
-        try (FileWriter writer = new FileWriter(fileName, false)) {
-            if (parts.length == 1){
-                writer.write("1/" + user.toString());
-                return;
-            }
-            ArrayList<Pair<String, Integer>> scores = getNewHighScores(parts, user);
-            for (var i = 0; i < scores.size(); i++){
-                writer.write(String.format("%d/%s/%d/\n", i + 1, scores.get(i).getKey(), scores.get(i).getValue()));
-            }
+        if (file.length() <= 0) {
+            return false;
         }
-        catch (IOException e) {
-            System.out.println(e.getMessage());
+        return true;
+    }
+
+    private void createSaveFile(User user) {
+        String fileName = String.format("src/com/company/logs/%s.txt", user.name);
+        File file = new File(fileName);
+        try {
+            file.createNewFile();
+        }
+        catch(IOException e){
+                System.out.println(e.getMessage());
         }
     }
 
-    private String[] getExistingHighScores(String fileName){
-        StringBuilder text = new StringBuilder();
+    public SaveInformation parseExistingSave(User user){
+        // main number
+        // number/cows/bulls/
+        String fileName = String.format("src/com/company/logs/%s.txt", user.name);
+        StringBuilder logs = new StringBuilder();
         try (FileReader reader = new FileReader(fileName)){
             Scanner scan = new Scanner(reader);
+            int mainNumber = Integer.parseInt(scan.nextLine());
+            int tries = 0;
             while(scan.hasNextLine()){
-                text.append(scan.nextLine());
+                logs.append(scan.nextLine());
+                logs.append("\n");
+                tries++;
             }
+            return new SaveInformation(mainNumber, tries, logs.toString());
         }
         catch (IOException e){
             System.out.println(e.getMessage());
         }
-
-        return text.toString().split("/");
+        return new SaveInformation(0, 0, "");
     }
 
-    private ArrayList<Pair<String, Integer>> getNewHighScores(String[] parts, User user){
-        ArrayList<Pair<String, Integer>> scores = new ArrayList<>();
-        for (var i = 0; i < parts.length / 3; i++){
-            scores.add(new Pair<>(parts[i * 3 + 1], Integer.parseInt(parts[i * 3 + 2])));
+    private void deleteExistingSave(String fileName){
+        try (FileWriter writer = new FileWriter(fileName, false)){
+            writer.write("");
         }
-        if (scores.size() == 5){
-            scores.remove(scores.get(4));
+        catch (IOException e){
+            System.out.println(e.getMessage());
         }
-        scores.add(new Pair<>(user.name, user.getTries()));
-        Collections.sort(scores, Comparator.comparing(p -> p.getValue()));
-        return scores;
+    }
+
+    public void deleteExistingSave(User user){
+        String fileName = String.format("src/com/company/logs/%s.txt", user.name);
+        try (FileWriter writer = new FileWriter(fileName, false)){
+            writer.write("");
+        }
+        catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private String makeUserSaveInfo(Pair<Integer, Integer> cowsBulls, Integer guess){
+        return String.format("guess:%d cows:%d bulls:%d\n", guess, cowsBulls.getKey(), cowsBulls.getValue());
+    }
+
+
+    public void save(User user, Pair<Integer, Integer>  cowsBulls, Integer guess){
+        String log = makeUserSaveInfo(cowsBulls, guess);
+        String fileName = String.format("src/com/company/logs/%s.txt", user.name);
+        try (FileWriter writer = new FileWriter(fileName, true)){
+            writer.write(log);
+        }
+        catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void addNumber(String number, User user){
+        String fileName = String.format("src/com/company/logs/%s.txt", user.name);
+        try (FileWriter writer = new FileWriter(fileName, true)){
+            writer.write(number + "\n");
+        }
+        catch (IOException e){
+            System.out.println(e.getMessage());
+        }
     }
 }
