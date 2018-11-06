@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.*;
 
 public class HighScoresMaker {
+    private String fileName = "src/com/company/HighScore.txt";
     public void saveHighScore(User user) {
         String fileName = "src/com/company/HighScore.txt";
         String[] parts = getExistingHighScores(fileName);
@@ -27,7 +28,7 @@ public class HighScoresMaker {
         }
     }
 
-    private String[] getExistingHighScores(String fileName){
+    public String[] getExistingHighScores(String fileName){
         StringBuilder text = new StringBuilder();
         try (FileReader reader = new FileReader(fileName)){
             Scanner scan = new Scanner(reader);
@@ -42,7 +43,7 @@ public class HighScoresMaker {
         return text.toString().split("/");
     }
 
-    private ArrayList<Pair<String, Integer>> getNewHighScores(String[] parts, User user){
+    public ArrayList<Pair<String, Integer>> getNewHighScores(String[] parts, User user){
         ArrayList<Pair<String, Integer>> scores = new ArrayList<>();
         for (var i = 0; i < parts.length / 3; i++){
             scores.add(new Pair<>(parts[i * 3 + 1], Integer.parseInt(parts[i * 3 + 2])));

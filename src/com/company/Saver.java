@@ -55,15 +55,6 @@ public class Saver {
         return new SaveInformation(0, 0, "");
     }
 
-    private void deleteExistingSave(String fileName){
-        try (FileWriter writer = new FileWriter(fileName, false)){
-            writer.write("");
-        }
-        catch (IOException e){
-            System.out.println(e.getMessage());
-        }
-    }
-
     public void deleteExistingSave(User user){
         String fileName = String.format("src/com/company/logs/%s.txt", user.name);
         try (FileWriter writer = new FileWriter(fileName, false)){
@@ -80,10 +71,10 @@ public class Saver {
 
 
     public void save(User user, Pair<Integer, Integer>  cowsBulls, Integer guess){
-        String log = makeUserSaveInfo(cowsBulls, guess);
+        String line = makeUserSaveInfo(cowsBulls, guess);
         String fileName = String.format("src/com/company/logs/%s.txt", user.name);
         try (FileWriter writer = new FileWriter(fileName, true)){
-            writer.write(log);
+            writer.write(line);
         }
         catch (IOException e){
             System.out.println(e.getMessage());
