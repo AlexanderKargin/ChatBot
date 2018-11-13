@@ -16,13 +16,13 @@ public class Chat {
         String output;
         initUser();
         initGame(bot);
-        System.out.println(bot.makeAnswer(currentUser));
         do{
             var inputStr = input.nextLine();
-            bot.readInput(inputStr, currentUser);
-            output = bot.makeAnswer(currentUser);
-            System.out.println(output);
-            System.out.println(bot.toString());
+            System.out.println(bot.handleInput(inputStr, currentUser));
+//            bot.readInput(inputStr, currentUser);
+//            output = bot.makeAnswer(currentUser);
+//            System.out.println(output);
+//            System.out.println(bot.toString());
         } while (!bot.gameOver);
     }
 
@@ -35,6 +35,7 @@ public class Chat {
     private void initGame(Bot bot){
         Saver saver = new Saver();
         if (!saver.checkUserSave(currentUser)) {
+            System.out.println("Input number of digits");
             return;
         }
         System.out.println("There is a save with the same name, do you want continue saved game? Y/N");

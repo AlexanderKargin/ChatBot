@@ -8,20 +8,20 @@ import java.util.*;
 public class Bot{
     private List<Integer> mainNumber = new ArrayList<>();
     private int numberOfDigits = 0;
-    private int guess = 0;
+//    private int guess = 0;
     public boolean gameOver = false;
-    private int error = 0;
-    private Map<Integer, String> errorDict = makeDict();
+//    private int error = 0;
+//    private Map<Integer, String> errorDict = makeDict();
     private Saver saver = new Saver();
     private HighScoresMaker highScoresMaker = new HighScoresMaker();
 
-    private Map<Integer, String> makeDict(){
-        Map<Integer, String> map = new HashMap<>();
-        map.put(1, "Wrong number of digits");
-        map.put(2, "There are repetitions in number");
-        map.put(3, "Incorrect input");
-        return map;
-    };
+//    private Map<Integer, String> makeDict(){
+//        Map<Integer, String> map = new HashMap<>();
+//        map.put(1, "Wrong number of digits");
+//        map.put(2, "There are repetitions in number");
+//        map.put(3, "Incorrect input");
+//        return map;
+//    };
 
     public void setMainNumber(List<Integer> temp){
         mainNumber = temp;
@@ -49,50 +49,88 @@ public class Bot{
     // Вынести инициализацию +
     // Сделать один метод с обработкой вода
     // пробрасывать ошибку из ReadInput с текстом ошибки
-    public void readInput(String str, User user) {
-        // сначала обработка команд, потом ошибки, а потом если корректный ввод
-        error = 0;
-        try {
-            int input = Integer.parseInt(str);
 
-            if (numberOfDigits != 0 && Integer.toString(input).length() != numberOfDigits)
-                error = 1;
-            if (numberOfDigits != 0 && areThereRepeats(input))
-                error = 2;
+//    public void readInput(String str, User user) {
+//        // сначала обработка команд, потом ошибки, а потом если корректный ввод
+//        error = 0;
+//        try {
+//            int input = Integer.parseInt(str);
+//
+//            if (numberOfDigits != 0 && Integer.toString(input).length() != numberOfDigits)
+//                error = 1;
+//            if (numberOfDigits != 0 && areThereRepeats(input))
+//                error = 2;
+//
+//            if (numberOfDigits == 0 && input > 3 && input < 6) {
+//                numberOfDigits = input;
+//                createNumber();
+//                saver.addNumber(this.toString(), user);
+//                user.cowsAndBullsNumber = this.toString();
+//            }
+//            if (numberOfDigits != 0 && Integer.toString(input).length() == numberOfDigits && !areThereRepeats(input)) {
+//                guess = input;
+//                user.increaseTries();
+//            }
+//        }
+//        catch (NumberFormatException e)
+//        {
+//            if (user.getTries() > 0 && (str.equals("/q")|| str.equals("/quit"))) {
+//            gameOver = true;
+//        }
+//            else {
+//                error = 3;
+//            }
+//        }
+//    }
 
-            if (numberOfDigits == 0 && input > 3 && input < 6) {
-                numberOfDigits = input;
-                createNumber();
-                saver.addNumber(this.toString(), user);
-                user.cowsAndBullsNumber = this.toString();
-            }
-            if (numberOfDigits != 0 && Integer.toString(input).length() == numberOfDigits && !areThereRepeats(input)) {
-                guess = input;
-                user.increaseTries();
-            }
+    public String handleInput(String str, User user){
+        int guess;
+        if (user.getTries() > 0 && (str.equals("/q")|| str.equals("/quit"))) {
+            gameOver = true;
         }
-        catch (NumberFormatException e)
-        {
-            if (user.getTries() > 0 && (str.equals("/q")|| str.equals("/quit"))) {
-                gameOver = true;
+        else {
+            try {
+                guess = parseInput(str, user);
+            } catch (WrongInputException e) {
+                return e.getMessage();
+            } catch (NumberFormatException e) {
+                return "Incorrect Input";
             }
-            else {
-                error = 3;
-            }
+            return makeAnswer(user, guess);
         }
+        return "";
     }
 
-    public String makeAnswer(User user){
+    public Integer parseInput(String str, User user) throws WrongInputException {
+        // сначала обработка команд, потом ошибки, а потом если корректный ввод
+        int input = Integer.parseInt(str);
+        if (numberOfDigits != 0 && Integer.toString(input).length() != numberOfDigits)
+            throw new WrongInputException("Wrong number of digits");
+        else if (numberOfDigits != 0 && areThereRepeats(input))
+            throw new WrongInputException("There are repetitions in number");
+        else if (numberOfDigits == 0 && input > 3 && input < 6) {
+            numberOfDigits = input;
+            createNumber();
+            saver.addNumber(this.toString(), user);
+            user.cowsAndBullsNumber = this.toString();
+        }
+        else if (numberOfDigits != 0 && Integer.toString(input).length() == numberOfDigits
+                && !areThereRepeats(input)) {
+            user.increaseTries();
+            return input;
+        }
+        return 0;
+    }
+
+    public String makeAnswer(User user, Integer guess){
         if (gameOver)
             return ("Game is over");
-        if (error != 0)
-            return (errorDict.get(error));
         if (numberOfDigits == 0)
             return ("Input the number of digits(4 or 5)");
         if (guess == 0)
             return ("Make your guess");
         Pair<Integer, Integer> result = checkCowsAndBulls(guess);
-        if (result.getValue() == 4) {
+        if (result.getValue() == numberOfDigits) {
             gameOver = true;
             highScoresMaker.saveHighScore(user);
             saver.deleteExistingSave(user);
