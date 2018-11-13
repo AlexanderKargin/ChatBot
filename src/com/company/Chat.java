@@ -19,10 +19,6 @@ public class Chat {
         do{
             var inputStr = input.nextLine();
             System.out.println(bot.handleInput(inputStr, currentUser));
-//            bot.readInput(inputStr, currentUser);
-//            output = bot.makeAnswer(currentUser);
-//            System.out.println(output);
-//            System.out.println(bot.toString());
         } while (!bot.gameOver);
     }
 
@@ -42,7 +38,10 @@ public class Chat {
         if (shouldLoadSave()){
             loadSave(bot, saver);
         }
-        saver.deleteExistingSave(currentUser);
+        else{
+            saver.deleteExistingSave(currentUser);
+            System.out.println("Input number of digits");
+        }
     }
 
     private void loadSave(Bot bot, Saver saver){

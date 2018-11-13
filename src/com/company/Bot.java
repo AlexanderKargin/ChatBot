@@ -8,20 +8,9 @@ import java.util.*;
 public class Bot{
     private List<Integer> mainNumber = new ArrayList<>();
     private int numberOfDigits = 0;
-//    private int guess = 0;
     public boolean gameOver = false;
-//    private int error = 0;
-//    private Map<Integer, String> errorDict = makeDict();
     private Saver saver = new Saver();
     private HighScoresMaker highScoresMaker = new HighScoresMaker();
-
-//    private Map<Integer, String> makeDict(){
-//        Map<Integer, String> map = new HashMap<>();
-//        map.put(1, "Wrong number of digits");
-//        map.put(2, "There are repetitions in number");
-//        map.put(3, "Incorrect input");
-//        return map;
-//    };
 
     public void setMainNumber(List<Integer> temp){
         mainNumber = temp;
@@ -46,42 +35,6 @@ public class Bot{
         Collections.reverse(result);
         return result;
     }
-    // Вынести инициализацию +
-    // Сделать один метод с обработкой вода
-    // пробрасывать ошибку из ReadInput с текстом ошибки
-
-//    public void readInput(String str, User user) {
-//        // сначала обработка команд, потом ошибки, а потом если корректный ввод
-//        error = 0;
-//        try {
-//            int input = Integer.parseInt(str);
-//
-//            if (numberOfDigits != 0 && Integer.toString(input).length() != numberOfDigits)
-//                error = 1;
-//            if (numberOfDigits != 0 && areThereRepeats(input))
-//                error = 2;
-//
-//            if (numberOfDigits == 0 && input > 3 && input < 6) {
-//                numberOfDigits = input;
-//                createNumber();
-//                saver.addNumber(this.toString(), user);
-//                user.cowsAndBullsNumber = this.toString();
-//            }
-//            if (numberOfDigits != 0 && Integer.toString(input).length() == numberOfDigits && !areThereRepeats(input)) {
-//                guess = input;
-//                user.increaseTries();
-//            }
-//        }
-//        catch (NumberFormatException e)
-//        {
-//            if (user.getTries() > 0 && (str.equals("/q")|| str.equals("/quit"))) {
-//            gameOver = true;
-//        }
-//            else {
-//                error = 3;
-//            }
-//        }
-//    }
 
     public String handleInput(String str, User user){
         int guess;
