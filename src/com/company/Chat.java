@@ -53,12 +53,9 @@ public class Chat {
 
     private boolean shouldLoadSave(){
         String str = input.nextLine();
-        if (str.equalsIgnoreCase("y") || str.equalsIgnoreCase("yes")){
-            return true;
-        }
-        else if (str.equalsIgnoreCase("n") || str.equalsIgnoreCase("no")){
-            return false;
-        }
-        return false;
+        return str.equalsIgnoreCase("y") || str.equalsIgnoreCase("yes");
     }
 }
+
+
+//Maven, Google guice

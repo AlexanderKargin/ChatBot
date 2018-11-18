@@ -40,37 +40,34 @@ public class Bot{
         int guess;
         if (user.getTries() > 0 && (str.equals("/q")|| str.equals("/quit"))) {
             gameOver = true;
+            return "";
         }
-        else {
-            try {
-                guess = parseInput(str, user);
-            } catch (WrongInputException e) {
-                return e.getMessage();
-            } catch (NumberFormatException e) {
-                return "Incorrect Input";
-            }
-            return makeAnswer(user, guess);
+        try {
+            guess = parseInput(str, user);
+        } catch (WrongInputException e) {
+            return e.getMessage();
+        } catch (NumberFormatException e) {
+            return "Incorrect Input";
         }
-        return "";
+        return makeAnswer(user, guess);
     }
 
     public Integer parseInput(String str, User user) throws WrongInputException {
-        // сначала обработка команд, потом ошибки, а потом если корректный ввод
         int input = Integer.parseInt(str);
         if (numberOfDigits != 0 && Integer.toString(input).length() != numberOfDigits)
             throw new WrongInputException("Wrong number of digits");
         else if (numberOfDigits != 0 && areThereRepeats(input))
             throw new WrongInputException("There are repetitions in number");
+        else if (numberOfDigits != 0 && Integer.toString(input).length() == numberOfDigits
+                && !areThereRepeats(input)) {
+            user.increaseTries();
+            return input;
+        }
         else if (numberOfDigits == 0 && input > 3 && input < 6) {
             numberOfDigits = input;
             createNumber();
             saver.addNumber(this.toString(), user);
             user.cowsAndBullsNumber = this.toString();
-        }
-        else if (numberOfDigits != 0 && Integer.toString(input).length() == numberOfDigits
-                && !areThereRepeats(input)) {
-            user.increaseTries();
-            return input;
         }
         return 0;
     }
