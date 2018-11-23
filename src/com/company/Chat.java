@@ -1,6 +1,9 @@
 package com.company;
 
 import javafx.util.Pair;
+import org.telegram.telegrambots.ApiContextInitializer;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -20,6 +23,18 @@ public class Chat {
             var inputStr = input.nextLine();
             System.out.println(bot.handleInput(inputStr, currentUser));
         } while (!bot.gameOver);
+    }
+
+    public static void main() {
+        ApiContextInitializer.init(); // Инициализируем апи
+        TelegBot telegBot = new TelegBot("CowsAndBulls", "574223491:AAE0KkuaDSiXPNvlr9SudceuulT1O93K1uk");
+        TelegramBotsApi botapi = new TelegramBotsApi();
+        try {
+            botapi.registerBot(telegBot);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+        System.out.println("AAA");
     }
 
     private void initUser(){

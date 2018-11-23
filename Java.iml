@@ -19,5 +19,10 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="telegaBot" level="project" />
+    <orderEntry type="library" name="telegrambots-abilities-4.1-jar-with-dependencies" level="project" />
+    <orderEntry type="library" name="telegrambots-chat-session-bot-4.1-jar-with-dependencies" level="project" />
+    <orderEntry type="library" name="telegrambots-spring-boot-starter-4.1-jar-with-dependencies" level="project" />
+    <orderEntry type="library" name="telegrambotsextensions-4.1-jar-with-dependencies" level="project" />
   </component>
 </module>
