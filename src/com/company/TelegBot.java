@@ -1,15 +1,22 @@
 package com.company;
 
+import com.fasterxml.jackson.jaxrs.json.annotation.JSONP;
+import org.telegram.abilitybots.api.objects.Ability;
+import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import static org.telegram.abilitybots.api.objects.Locality.ALL;
+import static org.telegram.abilitybots.api.objects.Privacy.PUBLIC;
+
 public class TelegBot extends TelegramLongPollingBot {
     private String NAME;
     private String TOKEN;
 
-    public TelegBot(String name, String token){
+    public TelegBot(String name, String token, DefaultBotOptions botOptions){
+        super(botOptions);
         NAME = name;
         TOKEN = token;
     }

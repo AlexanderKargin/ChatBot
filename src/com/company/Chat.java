@@ -25,17 +25,16 @@ public class Chat {
         } while (!bot.gameOver);
     }
 
-    public static void main() {
-        ApiContextInitializer.init(); // Инициализируем апи
-        TelegBot telegBot = new TelegBot("CowsAndBulls", "574223491:AAE0KkuaDSiXPNvlr9SudceuulT1O93K1uk");
-        TelegramBotsApi botapi = new TelegramBotsApi();
-        try {
-            botapi.registerBot(telegBot);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-        System.out.println("AAA");
-    }
+//    public static void main() {
+//        ApiContextInitializer.init(); // Инициализируем апи
+//        TelegBot telegBot = new TelegBot("CowsAndBulls", "574223491:AAE0KkuaDSiXPNvlr9SudceuulT1O93K1uk");
+//        TelegramBotsApi botapi = new TelegramBotsApi();
+//        try {
+//            botapi.registerBot(telegBot);
+//        } catch (TelegramApiException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     private void initUser(){
         System.out.println("Hello, write yor name.");
