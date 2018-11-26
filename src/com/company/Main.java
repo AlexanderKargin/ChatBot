@@ -12,8 +12,9 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        Chat current = new Chat();
-        MainTelegBot.main();
+        Chat chat = new Chat();
+        chat.Run();
+        //MainTelegBot.main();
     }
 }
 

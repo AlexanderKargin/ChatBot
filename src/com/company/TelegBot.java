@@ -14,17 +14,19 @@ import static org.telegram.abilitybots.api.objects.Privacy.PUBLIC;
 public class TelegBot extends TelegramLongPollingBot {
     private String NAME;
     private String TOKEN;
+    private Chat chat;
 
     public TelegBot(String name, String token, DefaultBotOptions botOptions){
         super(botOptions);
         NAME = name;
         TOKEN = token;
+        chat = new Chat();
     }
 
     @Override
     public void onUpdateReceived(Update update) {
         String message = update.getMessage().getText();
-        sendMsg(update.getMessage().getChatId().toString(), message);
+        //chat.Run(this, update.getMessage().getChatId().toString());
     }
 
     @Override
