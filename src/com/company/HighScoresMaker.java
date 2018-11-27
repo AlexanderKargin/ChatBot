@@ -5,7 +5,6 @@ import java.io.*;
 import java.util.*;
 
 public class HighScoresMaker {
-    private String fileName = "src/com/company/HighScore.txt";
     public void saveHighScore(User user) {
         String fileName = "src/com/company/HighScore.txt";
         String[] parts = getExistingHighScores(fileName);

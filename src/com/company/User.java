@@ -1,13 +1,33 @@
 package com.company;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
     public String name;
-    public String cowsAndBullsNumber;
     private Integer tries;
+    private List<Integer> cowsAndBullsNumber = new ArrayList<>();
+    public Integer numberOfDigits;
 
     public User(String name){
         this.name = name;
-        this.tries = 0;
+        tries = 0;
+        numberOfDigits = 0;
+    }
+
+    public void setCowsAndBullsNumber(List<Integer> mainNumber){
+        cowsAndBullsNumber = mainNumber;
+    }
+
+    public String getStringCowsAndBullsNumber(){
+            StringBuilder res = new StringBuilder();
+            for (var numb:cowsAndBullsNumber)
+                res.append(numb);
+            return res.toString();
+    }
+
+    public List<Integer> getCowsAndBullsNumber(){
+        return cowsAndBullsNumber;
     }
 
     public void increaseTries(){

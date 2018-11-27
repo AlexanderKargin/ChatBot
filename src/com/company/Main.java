@@ -12,9 +12,12 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        Chat chat = new Chat();
-        chat.Run();
-        //MainTelegBot.main();
+        if (args.length > 0 && args[0].equals("-t"))
+            MainTelegBot.main();
+        else {
+            Chat chat = new Chat();
+            //chat.Run();
+        }
     }
 }
 

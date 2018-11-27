@@ -6,31 +6,26 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public class Chat {
-    private static ArrayList<User> users = new ArrayList<>();
     private User currentUser;
     private Scanner input = new Scanner(System.in);
 
-    public void Run(){
-        System.out.println("Lets play Cows and Bulls!");
-        Bot bot = new Bot();
-        String output;
-        initUser();
-        initGame(bot);
-        do{
-            var inputStr = input.nextLine();
-            System.out.println(bot.handleInput(inputStr, currentUser));
-        } while (!bot.gameOver);
-    }
+//    public void Run(){
+//        System.out.println("Lets play Cows and Bulls!");
+//        Bot bot = new Bot();
+//        initUser();
+//        initGame(bot);
+//        do{
+//            var inputStr = input.nextLine();
+//            System.out.println(bot.handleInput(inputStr, currentUser));
+//        } while (!bot.gameOver);
+//    }
 
     private void initUser(){
         System.out.println("Hello, write yor name.");
         currentUser = new User(input.nextLine());
-        users.add(currentUser);
     }
 
     private void initGame(Bot bot){
@@ -52,7 +47,7 @@ public class Chat {
     private void loadSave(Bot bot, Saver saver){
         SaveInformation information = saver.parseExistingSave(currentUser);
         currentUser.setTries(information.getTries());
-        bot.loadSave(information);
+        bot.loadSave(information, currentUser);
         System.out.println(information.getLogInfo());
     }
 
