@@ -1,0 +1,4 @@
+com.company.Bot@66498699
+guess:1234 cows:2 bulls:0
+com.company.Bot@2f695c6
+guess:1234 cows:3 bulls:0

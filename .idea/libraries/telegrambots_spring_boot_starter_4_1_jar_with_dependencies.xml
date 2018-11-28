@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="telegrambots-spring-boot-starter-4.1-jar-with-dependencies">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/src/libs/telegrambots-spring-boot-starter-4.1-jar-with-dependencies.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

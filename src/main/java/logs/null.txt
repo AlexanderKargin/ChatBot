@@ -1,0 +1,4 @@
+com.company.Bot@4cc3f243
+guess:8537 cows:1 bulls:0
+guess:3496 cows:1 bulls:1
+guess:3214 cows:1 bulls:0
